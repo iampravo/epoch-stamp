@@ -12,7 +12,7 @@ A single-page unix timestamp converter. Convert timestamps to dates and back, th
 - **Date → timestamp** — pick a date & time (local or UTC) and get the epoch back in seconds and milliseconds.
 - **Shift time** — the main event: pick a base timestamp, tap any number of offset chips (1 day, 7 days, 14 days, 1 month, 1 year, ...) or add a custom amount, and get new epoch values instantly. Add or subtract with one toggle.
 - One-tap copy on every value. "Use as shift base" buttons chain the converters together.
-- Bold monochrome "ledger" design — Fraunces + IBM Plex Mono/Sans, warm paper/ink palette, hairline borders, no drop shadows. Same visual language as [kosten koper](https://kosten-koper.vercel.app) and [xchange rate](https://xchange-rate-ruddy.vercel.app).
+- Bold monochrome "blueprint" design — Fraunces + IBM Plex Mono/Sans, warm paper/ink palette, hairline borders, no drop shadows. Same visual language as [kosten koper](https://kosten-koper.vercel.app) and [xchange rate](https://xchange-rate-ruddy.vercel.app).
 - Zero build step, zero external requests — everything computes in the browser.
 
 ## Stack
