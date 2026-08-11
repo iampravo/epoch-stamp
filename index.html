@@ -3,113 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>epoch stamp ⏱️</title>
+<title>epoch stamp</title>
 <meta name="description" content="Convert unix timestamps to dates and back, then shift them by days, weeks, or months. No signup, no ads.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="page">
     <header class="header">
-      <h1>epoch stamp <span class="wiggle">⏱️</span></h1>
+      <h1>epoch stamp</h1>
       <p class="subtitle">timestamps, but make it easy</p>
     </header>
 
-    <section class="card">
-      <div class="card-head">
-        <label>right now</label>
-      </div>
-      <div class="results" id="nowResults"></div>
-    </section>
-
-    <section class="card">
-      <div class="card-head">
-        <label>timestamp → date</label>
-      </div>
-      <div class="from-row">
-        <div class="field field-grow">
-          <label for="epochInput">unix timestamp</label>
-          <input type="text" id="epochInput" inputmode="numeric" placeholder="1755000000" autocomplete="off">
-        </div>
-        <div class="field">
-          <label for="epochUnit">unit</label>
-          <select id="epochUnit">
-            <option value="auto">auto</option>
-            <option value="s">seconds</option>
-            <option value="ms">milliseconds</option>
-          </select>
-        </div>
-      </div>
-      <div class="results" id="toDateResults"></div>
-      <button type="button" class="ghost-btn" id="useAsBaseFromDate">↓ use as shift base</button>
-    </section>
-
-    <section class="card">
-      <div class="card-head">
-        <label>date → timestamp</label>
-      </div>
-      <div class="from-row">
-        <div class="field field-grow">
-          <label for="dateInput">date &amp; time</label>
-          <input type="datetime-local" id="dateInput" step="1">
-        </div>
-        <div class="field">
-          <label for="dateTz">as</label>
-          <select id="dateTz">
-            <option value="local">local time</option>
-            <option value="utc">UTC</option>
-          </select>
-        </div>
-      </div>
-      <div class="results" id="toEpochResults"></div>
-      <button type="button" class="ghost-btn" id="useAsBaseFromEpoch">↓ use as shift base</button>
-    </section>
-
-    <section class="card">
-      <div class="card-head">
-        <label>shift time</label>
-        <span class="hint">pick a base, tap offsets ✨</span>
-      </div>
-
-      <div class="from-row">
-        <div class="field field-grow">
-          <label for="shiftBase">base timestamp</label>
-          <input type="text" id="shiftBase" inputmode="numeric" placeholder="1755000000" autocomplete="off">
-        </div>
-        <div class="field">
-          <label>direction</label>
-          <div class="toggle-pair" id="directionToggle">
-            <button type="button" class="toggle-btn selected" data-dir="add">+ add</button>
-            <button type="button" class="toggle-btn" data-dir="sub">− subtract</button>
+    <div class="dashboard">
+      <div class="col col-left">
+        <section class="card">
+          <div class="card-head">
+            <label>right now</label>
           </div>
-        </div>
+          <div class="results" id="nowResults"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <label>shift time</label>
+            <span class="hint">pick a base, tap offsets</span>
+          </div>
+
+          <div class="from-row">
+            <div class="field field-grow">
+              <label for="shiftBase">base timestamp</label>
+              <input type="text" id="shiftBase" inputmode="numeric" placeholder="1755000000" autocomplete="off">
+            </div>
+            <div class="field">
+              <label>direction</label>
+              <div class="toggle-pair" id="directionToggle">
+                <button type="button" class="toggle-btn selected" data-dir="add">+ add</button>
+                <button type="button" class="toggle-btn" data-dir="sub">− subtract</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="to-section">
+            <div class="to-header">
+              <label>offset</label>
+              <button type="button" class="ghost-btn ghost-btn-sm" id="useNowAsBase">use now</button>
+            </div>
+            <div id="offsetChips" class="chip-grid"></div>
+          </div>
+
+          <div class="custom-row">
+            <input type="number" id="customAmount" min="0" step="1" placeholder="amount" inputmode="numeric">
+            <select id="customUnit">
+              <option value="minutes">minutes</option>
+              <option value="hours">hours</option>
+              <option value="days">days</option>
+              <option value="weeks">weeks</option>
+              <option value="months">months</option>
+              <option value="years">years</option>
+            </select>
+            <button type="button" class="chip" id="customChipToggle">+ custom</button>
+          </div>
+
+          <div class="results" id="shiftResults" aria-live="polite"></div>
+        </section>
       </div>
 
-      <div class="to-section">
-        <div class="to-header">
-          <label>offset</label>
-          <button type="button" class="ghost-btn ghost-btn-sm" id="useNowAsBase">use now</button>
-        </div>
-        <div id="offsetChips" class="chip-grid"></div>
-      </div>
+      <div class="col col-right">
+        <section class="card">
+          <div class="card-head">
+            <label>timestamp → date</label>
+          </div>
+          <div class="from-row">
+            <div class="field field-grow">
+              <label for="epochInput">unix timestamp</label>
+              <input type="text" id="epochInput" inputmode="numeric" placeholder="1755000000" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="epochUnit">unit</label>
+              <select id="epochUnit">
+                <option value="auto">auto</option>
+                <option value="s">seconds</option>
+                <option value="ms">milliseconds</option>
+              </select>
+            </div>
+          </div>
+          <div class="results" id="toDateResults"></div>
+          <button type="button" class="ghost-btn" id="useAsBaseFromDate">↓ use as shift base</button>
+        </section>
 
-      <div class="custom-row">
-        <input type="number" id="customAmount" min="0" step="1" placeholder="amount" inputmode="numeric">
-        <select id="customUnit">
-          <option value="minutes">minutes</option>
-          <option value="hours">hours</option>
-          <option value="days">days</option>
-          <option value="weeks">weeks</option>
-          <option value="months">months</option>
-          <option value="years">years</option>
-        </select>
-        <button type="button" class="chip" id="customChipToggle">+ custom</button>
+        <section class="card">
+          <div class="card-head">
+            <label>date → timestamp</label>
+          </div>
+          <div class="from-row">
+            <div class="field field-grow">
+              <label for="dateInput">date &amp; time</label>
+              <input type="datetime-local" id="dateInput" step="1">
+            </div>
+            <div class="field">
+              <label for="dateTz">as</label>
+              <select id="dateTz">
+                <option value="local">local time</option>
+                <option value="utc">UTC</option>
+              </select>
+            </div>
+          </div>
+          <div class="results" id="toEpochResults"></div>
+          <button type="button" class="ghost-btn" id="useAsBaseFromEpoch">↓ use as shift base</button>
+        </section>
       </div>
-
-      <div class="results" id="shiftResults" aria-live="polite"></div>
-    </section>
+    </div>
 
     <p class="disclaimer">all math happens in your browser · nothing is sent anywhere · dates shown in your local timezone unless noted</p>
 
